@@ -5,15 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import java.io.*;
 
 public class CSVTableDisplay {
 
@@ -45,36 +37,46 @@ public class CSVTableDisplay {
             }
         });
 
+        JButton removeButton = new JButton("Remove selected rows");
+        removeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                removeSelectedRows();
+            }
+        });
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addButton);
+        buttonPanel.add(removeButton);
         buttonPanel.add(saveButton);
 
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
-        loadData();
+        // Проверяем наличие файла
+        if (fileExists()) {
+            loadData();
+        }
 
         frame.pack();
         frame.setVisible(true);
     }
 
+    private static boolean fileExists() {
+        return new File(csvFilePath).exists();
+    }
+
     private static void loadData() {
-        try (Reader reader = new FileReader(csvFilePath);
-             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader())) {
-
-            // Получение заголовков столбцов
-            for (String header : csvParser.getHeaderNames()) {
-                model.addColumn(header);
-            }
-
-            // Заполнение данных из CSV файла
-            for (CSVRecord record : csvParser) {
-                List<Object> rowData = new ArrayList<>();
-                for (String header : csvParser.getHeaderNames()) {
-                    rowData.add(record.get(header));
+        try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
+            String line;
+            if ((line = reader.readLine()) != null) {
+                String[] headers = line.split(";");
+                for (String header : headers) {
+                    model.addColumn(header);
                 }
-                model.addRow(rowData.toArray());
             }
-
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(";");
+                model.addRow(data);
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -87,10 +89,15 @@ public class CSVTableDisplay {
         }
     }
 
-    private static void saveData() {
-        try (FileWriter writer = new FileWriter(csvFilePath);
-             CSVParser csvParser = new CSVParser(new FileReader(csvFilePath), CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader())) {
+    private static void removeSelectedRows() {
+        int[] selectedRows = table.getSelectedRows();
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            model.removeRow(selectedRows[i]);
+        }
+    }
 
+    private static void saveData() {
+        try (FileWriter writer = new FileWriter(csvFilePath)) {
             // Запись заголовков столбцов
             for (int i = 0; i < model.getColumnCount(); i++) {
                 if (i > 0) {
