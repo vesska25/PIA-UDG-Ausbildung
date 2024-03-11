@@ -1,4 +1,3 @@
-// CSVTableDisplay.java
 package com.vesska;
 
 import javax.swing.*;
@@ -6,11 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 // Diese Klasse enthält die Hauptlogik zum Anzeigen und Bearbeiten einer CSV-Tabelle
 public class CSVTableDisplay {
-
     private static DefaultTableModel model; // Modell der Tabelle
     private static JTable table; // Die Tabelle selbst
     private static String csvFilePath = "src/main/resources/Artikel.csv"; // Pfad zur CSV-Datei
