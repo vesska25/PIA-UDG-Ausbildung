@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'com.vesska'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.json:json:20240303'
+    implementation 'org.apache.commons:commons-csv:1.10.0'
+}
