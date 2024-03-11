@@ -96,12 +96,18 @@ public class CSVTableDisplay {
         List<String> tokens = new ArrayList<>();
         StringBuilder token = new StringBuilder();
         boolean insideQuotes = false;
+        boolean escaped = false;
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
             if (c == '"') {
-                insideQuotes = !insideQuotes;
+                if (!escaped) {
+                    insideQuotes = !insideQuotes;
+                }
+                escaped = false;
+            } else if (c == '\\' && insideQuotes) {
+                escaped = true;
             } else if (c == ';' && !insideQuotes) {
-                tokens.add(token.toString());
+                tokens.add(token.toString().trim());
                 token.setLength(0);
             } else if (c == '\n' && insideQuotes) {
                 // Replace newline character with space inside quotes
@@ -110,7 +116,7 @@ public class CSVTableDisplay {
                 token.append(c);
             }
         }
-        tokens.add(token.toString());
+        tokens.add(token.toString().trim());
         return tokens.toArray(new String[0]);
     }
 

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fc9c209-15a7-483b-a23b-691e9714face" name="Changes" comment="add the ability to delete rows to the table">
+    <list default="true" id="1fc9c209-15a7-483b-a23b-691e9714face" name="Changes" comment="add Table creation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/vesska/CSVTableDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vesska/CSVTableDisplay.java" afterDir="false" />
@@ -146,9 +146,9 @@
       <list>
         <item itemvalue="Application.NewDataEntry" />
         <item itemvalue="Application.CSVtoJSON" />
-        <item itemvalue="Application.com.vesska.CSVTableDisplay" />
         <item itemvalue="Application.CSVTableDisplay" />
         <item itemvalue="Application.CSVReaderExample" />
+        <item itemvalue="Application.com.vesska.CSVTableDisplay" />
       </list>
     </recent_temporary>
   </component>
