@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSVTableDisplay {
 
@@ -44,14 +46,22 @@ public class CSVTableDisplay {
             }
         });
 
+        JButton chartButton = new JButton("Show Percentage Chart");
+        chartButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showPercentageChart();
+            }
+        });
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(saveButton);
+        buttonPanel.add(chartButton);
 
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Проверяем наличие файла
+        // Check if the file exists
         if (fileExists()) {
             loadData();
         }
@@ -68,18 +78,40 @@ public class CSVTableDisplay {
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
             String line;
             if ((line = reader.readLine()) != null) {
-                String[] headers = line.split(";");
+                String[] headers = parseCSVLine(line);
                 for (String header : headers) {
                     model.addColumn(header);
                 }
             }
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(";");
+                String[] data = parseCSVLine(line);
                 model.addRow(data);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private static String[] parseCSVLine(String line) {
+        List<String> tokens = new ArrayList<>();
+        StringBuilder token = new StringBuilder();
+        boolean insideQuotes = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                insideQuotes = !insideQuotes;
+            } else if (c == ';' && !insideQuotes) {
+                tokens.add(token.toString());
+                token.setLength(0);
+            } else if (c == '\n' && insideQuotes) {
+                // Replace newline character with space inside quotes
+                token.append(' ');
+            } else {
+                token.append(c);
+            }
+        }
+        tokens.add(token.toString());
+        return tokens.toArray(new String[0]);
     }
 
     private static void addEmptyRow() {
@@ -98,7 +130,7 @@ public class CSVTableDisplay {
 
     private static void saveData() {
         try (FileWriter writer = new FileWriter(csvFilePath)) {
-            // Запись заголовков столбцов
+            // Write column headers
             for (int i = 0; i < model.getColumnCount(); i++) {
                 if (i > 0) {
                     writer.append(';');
@@ -107,7 +139,7 @@ public class CSVTableDisplay {
             }
             writer.append('\n');
 
-            // Запись данных из таблицы
+            // Write data from the table
             for (int i = 0; i < model.getRowCount(); i++) {
                 for (int j = 0; j < model.getColumnCount(); j++) {
                     if (j > 0) {
@@ -123,5 +155,10 @@ public class CSVTableDisplay {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private static void showPercentageChart() {
+        // TODO: Implement chart display
+        JOptionPane.showMessageDialog(null, "Percentage chart functionality will be implemented soon!");
     }
 }
