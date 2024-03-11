@@ -9,6 +9,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 public class CSVTableDisplay {
 
     private static DefaultTableModel model;
@@ -20,6 +24,7 @@ public class CSVTableDisplay {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         model = new DefaultTableModel();
+
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -75,49 +80,26 @@ public class CSVTableDisplay {
     }
 
     private static void loadData() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
-            String line;
-            if ((line = reader.readLine()) != null) {
-                String[] headers = parseCSVLine(line);
-                for (String header : headers) {
-                    model.addColumn(header);
-                }
-            }
-            while ((line = reader.readLine()) != null) {
-                String[] data = parseCSVLine(line);
-                model.addRow(data);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
+        try (Reader reader = new FileReader(csvFilePath);
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader())) {
 
-    private static String[] parseCSVLine(String line) {
-        List<String> tokens = new ArrayList<>();
-        StringBuilder token = new StringBuilder();
-        boolean insideQuotes = false;
-        boolean escaped = false;
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
-            if (c == '"') {
-                if (!escaped) {
-                    insideQuotes = !insideQuotes;
-                }
-                escaped = false;
-            } else if (c == '\\' && insideQuotes) {
-                escaped = true;
-            } else if (c == ';' && !insideQuotes) {
-                tokens.add(token.toString().trim());
-                token.setLength(0);
-            } else if (c == '\n' && insideQuotes) {
-                // Replace newline character with space inside quotes
-                token.append(' ');
-            } else {
-                token.append(c);
+            // Получение заголовков столбцов
+            for (String header : csvParser.getHeaderNames()) {
+                model.addColumn(header);
             }
+
+            // Заполнение данных из CSV файла
+            for (CSVRecord record : csvParser) {
+                List<Object> rowData = new ArrayList<>();
+                for (String header : csvParser.getHeaderNames()) {
+                    rowData.add(record.get(header));
+                }
+                model.addRow(rowData.toArray());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        tokens.add(token.toString().trim());
-        return tokens.toArray(new String[0]);
     }
 
     private static void addEmptyRow() {
@@ -141,7 +123,7 @@ public class CSVTableDisplay {
                 if (i > 0) {
                     writer.append(';');
                 }
-                writer.append(model.getColumnName(i));
+                writer.append(escapeSpecialCharacters(model.getColumnName(i)));
             }
             writer.append('\n');
 
@@ -153,7 +135,7 @@ public class CSVTableDisplay {
                     }
                     Object value = model.getValueAt(i, j);
                     if (value != null) {
-                        writer.append(value.toString());
+                        writer.append(escapeSpecialCharacters(value.toString()));
                     }
                 }
                 writer.append('\n');
@@ -166,5 +148,12 @@ public class CSVTableDisplay {
     private static void showPercentageChart() {
         // TODO: Implement chart display
         JOptionPane.showMessageDialog(null, "Percentage chart functionality will be implemented soon!");
+    }
+
+    private static String escapeSpecialCharacters(String input) {
+        if (input.contains(";") || input.contains("\"") || input.contains("\n")) {
+            return "\"" + input.replaceAll("\"", "\"\"") + "\"";
+        }
+        return input;
     }
 }
