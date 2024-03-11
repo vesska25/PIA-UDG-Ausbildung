@@ -1,7 +1,9 @@
 plugins {
     id 'java'
 }
-
+compileJava {
+    options.encoding = 'UTF-8'
+}
 group 'com.vesska'
 version '1.0-SNAPSHOT'
 
