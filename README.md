@@ -16,7 +16,9 @@ Ich setze in meinem Projekt folgende 3rd Party Libraries ein:
 | `JFreeChart`         | JFreeChart ist eine in Java geschriebene Klassenbibliothek zum Generieren von Diagrammen.                                         |
 
 
-`Apache Commons CSV` habe ich verwendet, um Daten mit Fehlern aus der Datei korrekt zu lesen. \
+`Apache Commons CSV` habe ich verwendet, um Daten mit Fehlern aus der Datei korrekt zu lesen.
+Zuerst habe ich die `OpenCSV`-Bibliothek verwendet, aber damit wurde meine Tabelle nicht korrekt mit Daten gefüllt.
+Mit `Apache Commons CSV` konnte ich Daten aus einer CSV-Datei in eine Swing-Tabelle laden und Daten aus der Tabelle wieder in einer CSV-Datei speichern.\
 `Swing JTable` habe ich verwendet, um eine Tabelle zu erstellen und mit `JFreeChart` habe ich das Diagramm erstellt.
 
 
