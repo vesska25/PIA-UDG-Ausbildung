@@ -3,12 +3,11 @@
 # Eingesetzte Technologien / Frameworks
 **Folgende Technologien / Frameworks setze ich in meinem Projekt ein:**
 
-Ich habe mich für `Java 11` entschieden, weil ich die meisten Autotests in dieser Sprache geschrieben habe
-und ungefähr verstand, wie das Projekt gestaltet werden könnte. 
+Ich habe mich für `Java 11` entschieden, weil ich die meisten Autotests in dieser Sprache geschrieben habe. 
 
 # Used 3rd Party Libraries
 
-Ich setze in meinem Projekt die folgenden 3rd Party Libraries ein:
+Ich setze in meinem Projekt folgende 3rd Party Libraries ein:
 
 | Заголовок 1          | Заголовок 2                                                                                                                       |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------|
@@ -17,8 +16,8 @@ Ich setze in meinem Projekt die folgenden 3rd Party Libraries ein:
 | `JFreeChart`         | JFreeChart ist eine in Java geschriebene Klassenbibliothek zum Generieren von Diagrammen.                                         |
 
 
-`Apache Commons CSV` verwandte ich, um Daten aus einer Datei mit Fehlern korrekt zu lesen. \
-`Swing JTable` verwandte ich, um eine Tabelle zu erstellen und mit `JFreeChart` habe ich das Diagramm erstellt.
+`Apache Commons CSV` habe ich verwendet, um Daten mit Fehlern aus der Datei korrekt zu lesen. \
+`Swing JTable` habe ich verwendet, um eine Tabelle zu erstellen und mit `JFreeChart` habe ich das Diagramm erstellt.
 
 
 # Installation / Ausführen des Projektes
@@ -33,6 +32,6 @@ Ich setze in meinem Projekt die folgenden 3rd Party Libraries ein:
 
 - $ git clone https://github.com/vesska25/PIA-UDG-Ausbildung.git
 
-Erstellen Sie dann das Projekt und führen Sie CSVTableDisplay aus.
+Erstelle dann das Projekt und führe CSVTableDisplay aus.
 
 ###### Ich konnte das Programm nicht über das Terminal ausführen.... :(
