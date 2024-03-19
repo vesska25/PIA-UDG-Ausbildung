@@ -9,7 +9,7 @@ Ich habe mich für `Java 11` entschieden, weil ich die meisten Autotests in dies
 
 Ich setze in meinem Projekt folgende 3rd Party Libraries ein:
 
-| Заголовок 1          | Заголовок 2                                                                                                                       |
+| Name                 | Begründung                                                                                                                        |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | `Apache Commons CSV` | Die Apache Commons CSV-Bibliothek bietet eine einfache Schnittstelle zum Lesen und Schreiben von CSV-Dateien verschiedener Typen. |
 | `Swing JTable`       | JTable wird verwendet, um Daten in Tabellenform anzuzeigen.                                                                       |
